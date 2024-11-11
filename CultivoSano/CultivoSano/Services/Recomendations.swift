@@ -152,7 +152,7 @@ let reglas: [String: [(temperaturaRange: ClosedRange<Double>, humedadRange: Clos
             climateRecommendation: "El clima templado favorece la mancha bronceada; realizar rotación de cultivos y monitorear el área.")
         )
     ],
-    "Bean_Anthracnose": [
+    "Bean_anthra": [
         (temperaturaRange: 13...26, humedadRange: 92...100, recomendacion: Recomendacion(
             descripcionEnfermedad: "Antracnosis en frijol",
             descripcion: "Infección fúngica causada por Colletotrichum lindemuthianum, que produce lesiones en hojas, tallos y vainas.",
@@ -161,7 +161,7 @@ let reglas: [String: [(temperaturaRange: ClosedRange<Double>, humedadRange: Clos
             climateRecommendation: "Las condiciones actuales favorecen la antracnosis; evite manipulación de plantas húmedas y use fungicidas preventivos.")
         )
     ],
-    "Bean_Rust": [
+    "Bean_rust": [
         (temperaturaRange: 18...25, humedadRange: 85...100, recomendacion: Recomendacion(
             descripcionEnfermedad: "Roya en frijol",
             descripcion: "Enfermedad causada por el hongo Uromyces appendiculatus, que forma pústulas anaranjadas en la superficie de las hojas.",
@@ -170,7 +170,7 @@ let reglas: [String: [(temperaturaRange: ClosedRange<Double>, humedadRange: Clos
             climateRecommendation: "El clima húmedo favorece la roya en frijol; aplicar fungicidas preventivos y limitar riego por aspersión.")
         )
     ],
-    "Bean_Healthy": [
+    "Bean_healthy": [
         (temperaturaRange: -1000...Double.greatestFiniteMagnitude, humedadRange: -10000...Double.greatestFiniteMagnitude, recomendacion: Recomendacion(
             descripcionEnfermedad: "Frijol saludable",
             descripcion: "Estado saludable del frijol con bajo riesgo de enfermedades.",

@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct CropAnalysis: View {
+    @ObservedObject var viewModel: CropHealthDataHandlerService // Recibe el viewModel para mostrar los datos
     @State private var isPestDetectionOpen = true // Estado para la sección de detección de plagas
 
     var body: some View {
@@ -18,15 +19,16 @@ struct CropAnalysis: View {
                             .font(.title)
                         Text("Trigo, Puebla, México")
                             .font(.subheadline)
-                            .foregroundStyle(.gray)
+                            .foregroundColor(.gray)
                     }
                     
                     Spacer()
                 }
                 .padding(.top)
 
+                // Detección de plaga
                 DisclosureGroup {
-                    Text("Durante la última revisión, se observó una ligera infestación de pulgones en las hojas superiores. Aunque aún no es crítica, es importante actuar rápidamente para evitar que se propague.")
+                    Text(viewModel.cropHealthDescription.isEmpty ? "Sin detección de plagas disponible." : viewModel.cropHealthDescription)
                         .padding(.vertical)
                 } label: {
                     Text("Detección de la plaga")
@@ -34,21 +36,10 @@ struct CropAnalysis: View {
                         .font(.title2)
                 }
                 .padding(.top)
-                .onAppear {
-                    // Abrir la sección al iniciar
-                    isPestDetectionOpen = true
-                }
-                .background(Group {
-                    // Configuración para que la sección esté abierta al inicio
-                    if isPestDetectionOpen {
-                        EmptyView()
-                    } else {
-                        EmptyView()
-                    }
-                })
 
+                // Recomendaciones
                 DisclosureGroup {
-                    Text("Tomando en cuenta las altas temperaturas que hemos estado experimentando en Puebla, los pulgones tienden a multiplicarse más rápido. Te sugerimos aplicar un insecticida biológico. Te recomendamos usar aceite de neem, que es efectivo y menos dañino para el medio ambiente. Asegúrate de cubrir bien ambas caras de las hojas, ya que los pulgones suelen esconderse ahí.")
+                    Text(viewModel.cropHealthDescription.isEmpty ? "No hay recomendaciones disponibles." : viewModel.cropHealthDescription)
                         .padding(.vertical)
                 } label: {
                     Text("Recomendaciones")
@@ -57,10 +48,10 @@ struct CropAnalysis: View {
                 }
                 .padding(.top)
 
+                // Estrategias ecológicas
                 DisclosureGroup {
                     VStack(alignment: .leading) {
-                        Text("Considera plantar flores que atraigan mariquitas y otros depredadores naturales de pulgones. Esto ayudará a mantener la población de plagas bajo control de forma natural.")
-                        Text("Igual si se cambian los cultivos de lugar cada temporada puede interrumpir el ciclo de vida de las plagas y prevenir futuras infestaciones. Piensa en alternar el trigo con legumbres, que también enriquecerán el suelo.")
+                        Text(viewModel.cropHealthDescription.isEmpty ? "No hay estrategias ecológicas disponibles." : viewModel.cropHealthDescription)
                     }
                     .padding(.vertical)
                 } label: {
@@ -77,6 +68,5 @@ struct CropAnalysis: View {
 }
 
 #Preview {
-    CropAnalysis()
+    CropAnalysis(viewModel: CropHealthDataHandlerService())
 }
-

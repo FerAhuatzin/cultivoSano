@@ -10,9 +10,10 @@ struct Crop: Identifiable {
 
 struct CropItem: View {
     var crop: Crop
+    var viewModel: CropHealthDataHandlerService // Recibe el viewModel como parámetro
 
     var body: some View {
-        NavigationLink(destination: CropAnalysis()) {
+        NavigationLink(destination: CropAnalysis(viewModel: viewModel)) { // Pasa el viewModel a CropAnalysis
             HStack {
                 VStack(alignment: .leading) {
                     Text(crop.name)
@@ -36,12 +37,11 @@ struct CropItem: View {
             .background(Color.white)
             .cornerRadius(8)
             .padding(.horizontal)
-            
         }
     }
 }
 
 #Preview {
-    CropItem(crop: Crop(name: "Cultivo Santa Catarina", species: "Trigo", location: "Cholula, México", image: Image("wheatImage")))
+    let viewModel = CropHealthDataHandlerService()
+    CropItem(crop: Crop(name: "Cultivo Santa Catarina", species: "Trigo", location: "Cholula, México", image: Image("wheatImage")), viewModel: viewModel)
 }
-

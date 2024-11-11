@@ -6,6 +6,8 @@ struct Main: View {
     @State private var showImagePicker = false
     @State private var imageSource: UIImagePickerController.SourceType = .camera
     @State private var selectedImage: UIImage?
+    @State private var showAlert = false
+    @StateObject private var viewModel = CropHealthDataHandlerService()
     
     // Lista para almacenar los cultivos
     @State private var crops: [Crop] = []
@@ -48,8 +50,12 @@ struct Main: View {
                 
                 // Botón para abrir la cámara
                 Button(action: {
-                    imageSource = .camera
-                    showImagePicker = true
+                    if crop_name.isEmpty || species_of_crop.isEmpty {
+                        showAlert = true
+                    } else {
+                        imageSource = .camera
+                        showImagePicker = true
+                    }
                 }) {
                     Spacer()
                     Image(systemName: "camera.viewfinder")
@@ -73,55 +79,45 @@ struct Main: View {
                 .padding(.horizontal, 30)
                 .padding(.bottom, 10)
                 
-                // Botón para seleccionar una imagen de la galería
-                Button(action: {
-                    imageSource = .photoLibrary
-                    showImagePicker = true
-                }) {
-                    Spacer()
-                    Image(systemName: "photo.on.rectangle.angled")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 30, height: 30)
-                        .foregroundColor(Color("MainColor"))
-                        .padding(.leading, 40)
-                    Text("Elegir de la Galería")
-                        .frame(maxWidth: .infinity)
+                // Mostrar la predicción en la interfaz
+                if !viewModel.cropHealthDescription.isEmpty {
+                    Text(viewModel.cropHealthDescription)
                         .padding()
-                        .fontWeight(.bold)
-                        .foregroundColor(Color("MainColor"))
-                        .padding(.trailing, 40)
-                    Spacer()
+                        .background(Color.gray.opacity(0.1))
+                        .cornerRadius(8)
+                        .padding(.horizontal, 30)
                 }
-                .overlay(
-                    Rectangle()
-                        .stroke(Color("MainColor"), lineWidth: 2)
-                )
-                .padding(.horizontal, 30)
-                .padding(.bottom, 20)
                 
                 // Lista de cultivos agregados
                 ScrollView {
                     VStack {
                         ForEach(crops) { crop in
-                            CropItem(crop: crop)
+                            CropItem(crop: crop, viewModel: viewModel)
                             Divider()
                         }
                     }
                     .padding(.bottom, 20)
                 }
             }
+            .alert(isPresented: $showAlert) {
+                Alert(
+                    title: Text("Campos incompletos"),
+                    message: Text("Por favor, rellena el nombre y la especie del cultivo antes de continuar."),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
             .sheet(isPresented: $showImagePicker, onDismiss: {
-                // Verificar que el nombre, especie y la imagen estén completos antes de agregar el cultivo
                 if !crop_name.isEmpty && !species_of_crop.isEmpty && selectedImage != nil {
-                    // Agregar un nuevo cultivo con la ubicación predefinida (puedes cambiarla si es necesario)
-                    let uiImage = selectedImage!
-                    let newImage = Image(uiImage: uiImage)
+                    // Actualizar la imagen seleccionada en el servicio
+                    viewModel.selectedImage = selectedImage
+                    viewModel.diagnoseCropHealth(temperatura: 25, especie: species_of_crop)
+                    
+                    // Crear el nuevo cultivo con las recomendaciones
                     let nuevoCultivo = Crop(
                         name: crop_name,
                         species: species_of_crop,
-                        location: "Puebla, México", // Cambia esto si deseas una ubicación dinámica
-                        image: newImage
+                        location: "Puebla, México",
+                        image: Image(uiImage: selectedImage!)
                     )
                     crops.append(nuevoCultivo)
                     
@@ -136,9 +132,3 @@ struct Main: View {
         }
     }
 }
-
-#Preview {
-    Main()
-}
-
-
