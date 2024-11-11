@@ -6,8 +6,10 @@ struct Crop: Identifiable {
     let species: String
     let location: String
     let image: Image
-    let capturedImage: UIImage? // Imagen capturada
+    let capturedImage: UIImage?
+    var recomendacion: Recomendacion? // Nueva propiedad para almacenar la recomendación
 }
+
 
 
 
@@ -16,7 +18,7 @@ struct CropItem: View {
     var viewModel: CropHealthDataHandlerService // Recibe el viewModel como parámetro
 
     var body: some View {
-        NavigationLink(destination: CropAnalysis(viewModel: viewModel, capturedImage: crop.capturedImage, cropName: crop.name, cropSpecies: crop.species)) { // Pasa el viewModel y los datos necesarios a CropAnalysis
+        NavigationLink(destination: CropAnalysis(crop: crop)) { // Pasa el viewModel y los datos necesarios a CropAnalysis
             HStack {
                 VStack(alignment: .leading) {
                     Text(crop.name)

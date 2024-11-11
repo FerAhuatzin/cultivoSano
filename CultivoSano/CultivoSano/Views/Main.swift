@@ -123,15 +123,6 @@ struct Main: View {
                 .padding(.horizontal, 30)
                 .padding(.bottom, 20)
                 
-                // Mostrar la predicción en la interfaz
-                if !viewModel.cropHealthDescription.isEmpty {
-                    Text(viewModel.cropHealthDescription)
-                        .padding()
-                        .background(Color.gray.opacity(0.1))
-                        .cornerRadius(8)
-                        .padding(.horizontal, 30)
-                }
-                
                 // Lista de cultivos agregados
                 ScrollView {
                     VStack {
@@ -152,28 +143,31 @@ struct Main: View {
             }
             .sheet(isPresented: $showImagePicker, onDismiss: {
                 if !crop_name.isEmpty && !species_of_crop.isEmpty && selectedImage != nil {
-                    // Actualizar la imagen seleccionada en el servicio
-                    // Dentro del Main, donde se inicia el diagnóstico
+                    let viewModel = CropHealthDataHandlerService() // Nueva instancia del servicio para cada cultivo
                     viewModel.selectedImage = selectedImage
                     viewModel.diagnoseCropHealth(especie: species_of_crop)
-
                     
-                    // Dentro del botón de "Comenzar a analizar" o "Elegir de la Galería", donde se agrega el nuevo cultivo:
-                    let nuevoCultivo = Crop(
-                        name: crop_name,
-                        species: species_of_crop,
-                        location: "Puebla, México",
-                        image: Image(uiImage: selectedImage!),
-                        capturedImage: selectedImage // Imagen capturada
-                    )
-                    crops.append(nuevoCultivo)
-                    
-                    // Limpiar los campos y la imagen seleccionada
-                    crop_name = ""
-                    species_of_crop = ""
-                    selectedImage = nil
+                    // Espera a que el diagnóstico se complete en el servicio antes de asignar la recomendación
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) { // Ajustar el tiempo según sea necesario
+                        let nuevoCultivo = Crop(
+                            name: crop_name,
+                            species: species_of_crop,
+                            location: "Puebla, México",
+                            image: Image(uiImage: selectedImage!),
+                            capturedImage: selectedImage,
+                            recomendacion: viewModel.recomendacion // Asignar recomendación después del diagnóstico
+                        )
+                        crops.append(nuevoCultivo)
+                        
+                        // Limpiar los campos
+                        crop_name = ""
+                        species_of_crop = ""
+                        selectedImage = nil
+                    }
                 }
-            }) {
+            })
+
+            {
                 ImagePickerView(selectedImage: $selectedImage, sourceType: imageSource)
             }
         }
