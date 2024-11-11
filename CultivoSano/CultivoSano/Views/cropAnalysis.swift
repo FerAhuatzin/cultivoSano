@@ -32,6 +32,17 @@ struct CropAnalysis: View {
                     Spacer()
                 }
                 .padding(.top)
+                
+                // Descripción de la enfermedad (descripcionEnfermedad)
+                if let descripcionEnfermedad = crop.recomendacion?.descripcionEnfermedad {
+                    Text(descripcionEnfermedad)
+                        .font(.headline)
+                        .foregroundColor(
+                            descripcionEnfermedad.contains("saludable") ? Color("MainColor") : .red
+                        )
+                        .padding(.top, 10)
+                        .padding(.horizontal)
+                }
 
                 // Usar la recomendación específica del cultivo
                 DisclosureGroup {

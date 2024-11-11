@@ -134,7 +134,7 @@ let reglas: [String: [(temperaturaRange: ClosedRange<Double>, humedadRange: Clos
             climateRecommendation: "El ambiente húmedo favorece el desarrollo de carbón; priorizar el tratamiento de semillas.")
         )
     ],
-    "Wheat_Stem_Fly": [
+    "Wheat_Stem_fly": [
         (temperaturaRange: 20...Double.greatestFiniteMagnitude, humedadRange: -10000...Double.greatestFiniteMagnitude, recomendacion: Recomendacion(
             descripcionEnfermedad: "Mosca del tallo en trigo",
             descripcion: "Plaga de insecto cuyas larvas se alimentan dentro del tallo, debilitando la estructura.",
@@ -143,7 +143,7 @@ let reglas: [String: [(temperaturaRange: ClosedRange<Double>, humedadRange: Clos
             climateRecommendation: "Temperaturas elevadas aumentan el riesgo de infestación de mosca del tallo; ajustar época de siembra y considerar control biológico.")
         )
     ],
-    "Wheat_Tan_Spot": [
+    "Wheat_Tan_spot": [
         (temperaturaRange: 15...25, humedadRange: -10000...Double.greatestFiniteMagnitude, recomendacion: Recomendacion(
             descripcionEnfermedad: "Mancha bronceada en trigo",
             descripcion: "Enfermedad fúngica que causa manchas marrones en las hojas.",
@@ -188,7 +188,7 @@ let reglas: [String: [(temperaturaRange: ClosedRange<Double>, humedadRange: Clos
             climateRecommendation: "El clima cálido y húmedo puede propiciar la mancha bacteriana; reducir la humedad alrededor del cultivo.")
         )
     ],
-    "Pumpkin_Downey_Mildew": [
+    "Pumpkin_Downy_Mildew": [
         (temperaturaRange: 18...25, humedadRange: 70...Double.greatestFiniteMagnitude, recomendacion: Recomendacion(
             descripcionEnfermedad: "Mildiu velloso en calabaza",
             descripcion: "Infección fúngica causada por Pseudoperonospora cubensis, que afecta hojas y tallos.",
@@ -233,7 +233,7 @@ let reglas: [String: [(temperaturaRange: ClosedRange<Double>, humedadRange: Clos
             climateRecommendation: "Clima cálido y seco puede aumentar la infestación de escarabajos; usar trampas y controlar manualmente.")
         )
     ],
-    "Pumpkin_Healthy": [
+    "Pumpkin_Healthy_Leaf": [
         (temperaturaRange: -100000...Double.greatestFiniteMagnitude, humedadRange: 0...Double.greatestFiniteMagnitude, recomendacion: Recomendacion(
             descripcionEnfermedad: "Calabaza saludable",
             descripcion: "Estado saludable de calabaza, baja posibilidad enfermedades",
@@ -341,33 +341,40 @@ let recomendacionesGenericas: [String: Recomendacion] = [
         recomendacionEcologica: "Usar variedades resistentes y aplicar bioinoculantes.",
         climateRecommendation: "El ambiente húmedo favorece el desarrollo de carbón; priorizar el tratamiento de semillas."
     ),
-    "Wheat_Stem_Fly": Recomendacion(
+    "Wheat_Stem_fly": Recomendacion(
         descripcionEnfermedad: "Mosca del tallo en trigo",
         descripcion: "Plaga de insecto cuyas larvas se alimentan dentro del tallo, debilitando la estructura.",
         recomendacion: "Rotación de cultivos y ajuste en época de siembra.",
         recomendacionEcologica: "Control biológico con depredadores naturales.",
         climateRecommendation: "Temperaturas elevadas aumentan el riesgo de infestación de mosca del tallo; ajustar época de siembra y considerar control biológico."
     ),
-    "Wheat_Tan_Spot": Recomendacion(
+    "Wheat_Tan_spot": Recomendacion(
         descripcionEnfermedad: "Mancha bronceada en trigo",
         descripcion: "Enfermedad fúngica que causa manchas marrones en las hojas.",
         recomendacion: "Evitar el cultivo continuo de trigo y usar variedades resistentes.",
         recomendacionEcologica: "Aplicar microorganismos benéficos y diversificar cultivos.",
         climateRecommendation: "El clima templado favorece la mancha bronceada; realizar rotación de cultivos y monitorear el área."
     ),
-    "Bean_Anthracnose": Recomendacion(
+    "Bean_anthra": Recomendacion(
         descripcionEnfermedad: "Antracnosis en frijol",
         descripcion: "Infección fúngica causada por Colletotrichum lindemuthianum, que produce lesiones en hojas, tallos y vainas.",
         recomendacion: "Usa semillas certificadas y practica la rotación de cultivos.",
         recomendacionEcologica: "Rotación de cultivos y uso de semillas certificadas para prevenir la propagación.",
         climateRecommendation: "El clima actual es favorable para un cultivo saludable de frijol, reduciendo el riesgo de antracnosis."
     ),
-    "Bean_Rust": Recomendacion(
+    "Bean_rust": Recomendacion(
         descripcionEnfermedad: "Roya en frijol",
         descripcion: "Enfermedad causada por el hongo Uromyces appendiculatus, que forma pústulas anaranjadas en la superficie de las hojas.",
         recomendacion: "Practica la rotación de cultivos y elige variedades de frijol resistentes a la enfermedad.",
         recomendacionEcologica: "Rotación de cultivos y evitar el riego por aspersión para reducir la humedad en las hojas.",
         climateRecommendation: "El clima actual beneficia la salud del frijol y ayuda a prevenir la roya."
+    ),
+    "Bean_healthy":Recomendacion(
+        descripcionEnfermedad: "Frijol saludable",
+        descripcion: "Estado saludable del frijol con bajo riesgo de enfermedades.",
+        recomendacion: "Controla la humedad del suelo para evitar el exceso de humedad o el estrés hídrico.",
+        recomendacionEcologica: "Buena ventilación y drenaje ayudan a reducir vulnerabilidad a enfermedades.",
+        climateRecommendation: "Mantener un ambiente adecuado reduce el riesgo de enfermedades en frijoles."
     ),
     "Pumpkin_Bacterial_Leaf_Spot": Recomendacion(
         descripcionEnfermedad: "Mancha bacteriana en hojas de calabaza",
@@ -376,7 +383,7 @@ let recomendacionesGenericas: [String: Recomendacion] = [
         recomendacionEcologica: "Evitar el riego por aspersión y promover buena ventilación para reducir la humedad.",
         climateRecommendation: "El clima actual favorece la resistencia de la calabaza a la mancha bacteriana."
     ),
-    "Pumpkin_Downey_Mildew":
+    "Pumpkin_Downy_Mildew":
         Recomendacion(
             descripcionEnfermedad: "Mildiu velloso en calabaza",
             descripcion: "Infección fúngica causada por Pseudoperonospora cubensis, que afecta hojas y tallos.",
@@ -415,7 +422,7 @@ let recomendacionesGenericas: [String: Recomendacion] = [
         recomendacionEcologica: "Monitoreo constante y uso de trampas para capturar escarabajos.",
         climateRecommendation: "El clima actual ayuda a reducir el riesgo de infestación de escarabajos en calabaza."
     ),
-    "Pumpkin_Healthy":
+    "Pumpkin_Healthy_Leaf":
         Recomendacion(
             descripcionEnfermedad: "Calabaza saludable",
             descripcion: "Estado saludable de calabaza, baja posibilidad enfermedades",
@@ -427,22 +434,12 @@ let recomendacionesGenericas: [String: Recomendacion] = [
 
 
 func obtenerRecomendacion(especie: String, enfermedad: String) -> [String: String] {
-    // Buscar recomendaciones específicas en el árbol sin evaluar temperatura y humedad
-    if let reglasPorEnfermedad = reglas[enfermedad] {
-        // Selecciona la primera recomendación disponible para la enfermedad especificada
-        if let primeraRegla = reglasPorEnfermedad.first {
-            return [
-                "descripcion_enfermedad": primeraRegla.recomendacion.descripcionEnfermedad,
-                "descripcion": primeraRegla.recomendacion.descripcion,
-                "recomendacion": primeraRegla.recomendacion.recomendacion,
-                "recomendacion_ecologica": primeraRegla.recomendacion.recomendacionEcologica,
-                "climateRecommendation": primeraRegla.recomendacion.climateRecommendation
-            ]
-        }
-    }
-    
-    // Si no hay una recomendación específica, regresar una recomendación genérica para la especie
-    if let recomendacionGenerica = recomendacionesGenericas[especie] {
+    // Imprimir la enfermedad para verificar que el valor es correcto
+    print("Buscando recomendación para la enfermedad: \(enfermedad)")
+
+    // Buscar directamente en recomendaciones genéricas para la enfermedad especificada
+    if let recomendacionGenerica = recomendacionesGenericas[enfermedad] {
+        print("Recomendación encontrada para \(enfermedad)")
         return [
             "descripcion_enfermedad": recomendacionGenerica.descripcionEnfermedad,
             "descripcion": recomendacionGenerica.descripcion,
@@ -450,9 +447,25 @@ func obtenerRecomendacion(especie: String, enfermedad: String) -> [String: Strin
             "recomendacion_ecologica": recomendacionGenerica.recomendacionEcologica,
             "climateRecommendation": recomendacionGenerica.climateRecommendation
         ]
+    } else {
+        print("No se encontró recomendación para \(enfermedad) en recomendacionesGenericas")
     }
     
-    // Si no hay recomendaciones ni específicas ni genéricas, regresar un valor vacío
+    // Si no hay una recomendación genérica para la enfermedad, regresar una recomendación para la especie
+    if let recomendacionEspecifica = recomendacionesGenericas[especie] {
+        print("Recomendación genérica encontrada para la especie: \(especie)")
+        return [
+            "descripcion_enfermedad": recomendacionEspecifica.descripcionEnfermedad,
+            "descripcion": recomendacionEspecifica.descripcion,
+            "recomendacion": recomendacionEspecifica.recomendacion,
+            "recomendacion_ecologica": recomendacionEspecifica.recomendacionEcologica,
+            "climateRecommendation": recomendacionEspecifica.climateRecommendation
+        ]
+    } else {
+        print("No se encontró recomendación para la especie: \(especie)")
+    }
+    
+    // Si no hay recomendaciones específicas ni genéricas, regresar un valor vacío
     return [
         "descripcion_enfermedad": "Sin descripción disponible",
         "descripcion": "No se encontraron descripciones de la enfermedad.",
