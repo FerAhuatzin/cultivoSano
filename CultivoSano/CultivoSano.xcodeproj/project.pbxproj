@@ -24,6 +24,7 @@
 		06B466A92CE1B10400CA902E /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B466A82CE1B10400CA902E /* ImagePickerView.swift */; };
 		06B466AB2CE1B14A00CA902E /* cropAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B466AA2CE1B14A00CA902E /* cropAnalysis.swift */; };
 		06B466AE2CE1B29D00CA902E /* Recomendations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B466AD2CE1B29D00CA902E /* Recomendations.swift */; };
+		06B466B02CE27A4D00CA902E /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B466AF2CE27A4D00CA902E /* WeatherService.swift */; };
 		EE6949292CE1E5F8000C4CDD /* CropHealthDataHandlerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6949262CE1E5F8000C4CDD /* CropHealthDataHandlerService.swift */; };
 		EE69492A2CE1E5F8000C4CDD /* CropIdentifierService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6949272CE1E5F8000C4CDD /* CropIdentifierService.swift */; };
 		EE69492B2CE1E5F8000C4CDD /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6949242CE1E5F8000C4CDD /* LocationService.swift */; };
@@ -51,6 +52,7 @@
 		06B466A82CE1B10400CA902E /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		06B466AA2CE1B14A00CA902E /* cropAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cropAnalysis.swift; sourceTree = "<group>"; };
 		06B466AD2CE1B29D00CA902E /* Recomendations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recomendations.swift; sourceTree = "<group>"; };
+		06B466AF2CE27A4D00CA902E /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
 		EE6949232CE1E576000C4CDD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		EE6949242CE1E5F8000C4CDD /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		EE6949252CE1E5F8000C4CDD /* CropHealthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CropHealthService.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				EE6949262CE1E5F8000C4CDD /* CropHealthDataHandlerService.swift */,
 				EE6949272CE1E5F8000C4CDD /* CropIdentifierService.swift */,
 				EE6949282CE1E5F8000C4CDD /* ImagePreprocessingService.swift */,
+				06B466AF2CE27A4D00CA902E /* WeatherService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -222,6 +225,7 @@
 			files = (
 				06B466A72CE1B0B500CA902E /* CropItem.swift in Sources */,
 				06B4669B2CE1AE5000CA902E /* mis_cultivos.swift in Sources */,
+				06B466B02CE27A4D00CA902E /* WeatherService.swift in Sources */,
 				06B4669F2CE1AE8100CA902E /* profile.swift in Sources */,
 				EE69492F2CE1E682000C4CDD /* CropClassification.mlmodel in Sources */,
 				06B466AB2CE1B14A00CA902E /* cropAnalysis.swift in Sources */,

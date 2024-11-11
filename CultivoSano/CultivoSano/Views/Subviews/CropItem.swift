@@ -47,7 +47,4 @@ struct CropItem: View {
     }
 }
 
-#Preview {
-    let viewModel = CropHealthDataHandlerService()
-    CropItem(crop: Crop(name: "Cultivo Santa Catarina", species: "Trigo", location: "Cholula, México", image: Image("wheatImage"), capturedImage: UIImage(named: "wheatImage")), viewModel: viewModel)
-}
+
