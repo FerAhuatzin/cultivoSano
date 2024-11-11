@@ -1,23 +1,33 @@
 import SwiftUI
 
 struct CropAnalysis: View {
-    @ObservedObject var viewModel: CropHealthDataHandlerService // Recibe el viewModel para mostrar los datos
-    @State private var isPestDetectionOpen = true // Estado para la sección de detección de plagas
-
+    @ObservedObject var viewModel: CropHealthDataHandlerService
+    var capturedImage: UIImage? // Imagen capturada
+    var cropName: String // Nombre del cultivo
+    var cropSpecies: String // Especie del cultivo
+    
     var body: some View {
         ScrollView {
             VStack {
                 HStack {
-                    Image("wheatImage")
-                        .resizable()
-                        .frame(width: 150, height: 150)
-                        .clipShape(Circle())
-                        .foregroundStyle(Color("MainColor"))
-                        .padding(.trailing, 20)
+                    if let capturedImage = capturedImage {
+                        Image(uiImage: capturedImage)
+                            .resizable()
+                            .frame(width: 150, height: 150)
+                            .clipShape(Circle())
+                            .padding(.trailing, 20)
+                    } else {
+                        Image("defaultImage")
+                            .resizable()
+                            .frame(width: 150, height: 150)
+                            .clipShape(Circle())
+                            .padding(.trailing, 20)
+                    }
+
                     VStack(alignment: .leading) {
-                        Text("Cultivo Santa Catarina")
+                        Text(cropName)
                             .font(.title)
-                        Text("Trigo, Puebla, México")
+                        Text("\(cropSpecies), Puebla, México")
                             .font(.subheadline)
                             .foregroundColor(.gray)
                     }
@@ -26,9 +36,9 @@ struct CropAnalysis: View {
                 }
                 .padding(.top)
 
-                // Detección de plaga
+                // Sección de recomendaciones de plagas
                 DisclosureGroup {
-                    Text(viewModel.cropHealthDescription.isEmpty ? "Sin detección de plagas disponible." : viewModel.cropHealthDescription)
+                    Text(viewModel.recomendacion?.descripcion ?? "No hay detección de plagas disponible.")
                         .padding(.vertical)
                 } label: {
                     Text("Detección de la plaga")
@@ -37,9 +47,9 @@ struct CropAnalysis: View {
                 }
                 .padding(.top)
 
-                // Recomendaciones
+                // Recomendaciones específicas
                 DisclosureGroup {
-                    Text(viewModel.cropHealthDescription.isEmpty ? "No hay recomendaciones disponibles." : viewModel.cropHealthDescription)
+                    Text(viewModel.recomendacion?.recomendacion ?? "No hay recomendaciones disponibles.")
                         .padding(.vertical)
                 } label: {
                     Text("Recomendaciones")
@@ -50,12 +60,21 @@ struct CropAnalysis: View {
 
                 // Estrategias ecológicas
                 DisclosureGroup {
-                    VStack(alignment: .leading) {
-                        Text(viewModel.cropHealthDescription.isEmpty ? "No hay estrategias ecológicas disponibles." : viewModel.cropHealthDescription)
-                    }
-                    .padding(.vertical)
+                    Text(viewModel.recomendacion?.recomendacionEcologica ?? "No hay estrategias ecológicas disponibles.")
+                        .padding(.vertical)
                 } label: {
                     Text("Estrategias ecológicas")
+                        .foregroundColor(Color("MainColor"))
+                        .font(.title2)
+                }
+                .padding(.top)
+
+                // Recomendaciones climáticas
+                DisclosureGroup {
+                    Text(viewModel.recomendacion?.climateRecommendation ?? "No hay recomendaciones climáticas disponibles.")
+                        .padding(.vertical)
+                } label: {
+                    Text("Recomendaciones climáticas")
                         .foregroundColor(Color("MainColor"))
                         .font(.title2)
                 }
@@ -65,8 +84,4 @@ struct CropAnalysis: View {
         .padding(.horizontal, 30)
         .padding(.top)
     }
-}
-
-#Preview {
-    CropAnalysis(viewModel: CropHealthDataHandlerService())
 }

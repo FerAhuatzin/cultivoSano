@@ -6,14 +6,17 @@ struct Crop: Identifiable {
     let species: String
     let location: String
     let image: Image
+    let capturedImage: UIImage? // Imagen capturada
 }
+
+
 
 struct CropItem: View {
     var crop: Crop
     var viewModel: CropHealthDataHandlerService // Recibe el viewModel como parámetro
 
     var body: some View {
-        NavigationLink(destination: CropAnalysis(viewModel: viewModel)) { // Pasa el viewModel a CropAnalysis
+        NavigationLink(destination: CropAnalysis(viewModel: viewModel, capturedImage: crop.capturedImage, cropName: crop.name, cropSpecies: crop.species)) { // Pasa el viewModel y los datos necesarios a CropAnalysis
             HStack {
                 VStack(alignment: .leading) {
                     Text(crop.name)
@@ -24,8 +27,7 @@ struct CropItem: View {
                         .font(.subheadline)
                         .foregroundColor(.gray)
                 }
-                .padding()
-
+                
                 Spacer()
 
                 crop.image
@@ -34,14 +36,16 @@ struct CropItem: View {
                     .clipShape(Circle())
                     .padding(.horizontal, 10)
             }
+            .padding(.horizontal, 15) // Aplicar padding general al HStack
+            .padding(.vertical, 10)
             .background(Color.white)
             .cornerRadius(8)
-            .padding(.horizontal)
         }
+        .padding(.horizontal)
     }
 }
 
 #Preview {
     let viewModel = CropHealthDataHandlerService()
-    CropItem(crop: Crop(name: "Cultivo Santa Catarina", species: "Trigo", location: "Cholula, México", image: Image("wheatImage")), viewModel: viewModel)
+    CropItem(crop: Crop(name: "Cultivo Santa Catarina", species: "Trigo", location: "Cholula, México", image: Image("wheatImage"), capturedImage: UIImage(named: "wheatImage")), viewModel: viewModel)
 }

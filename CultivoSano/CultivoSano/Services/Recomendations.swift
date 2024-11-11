@@ -426,18 +426,18 @@ let recomendacionesGenericas: [String: Recomendacion] = [
 
 
 
-func obtenerRecomendacion(especie: String, enfermedad: String, temperatura: Double, humedad: Double) -> [String: String] {
-    // Buscar recomendaciones específicas en el árbol
+func obtenerRecomendacion(especie: String, enfermedad: String) -> [String: String] {
+    // Buscar recomendaciones específicas en el árbol sin evaluar temperatura y humedad
     if let reglasPorEnfermedad = reglas[enfermedad] {
-        for regla in reglasPorEnfermedad {
-            if regla.temperaturaRange.contains(temperatura) && regla.humedadRange.contains(humedad) {
-                return [
-                    "descripcion_enfermedad": regla.recomendacion.descripcionEnfermedad,
-                    "descrpicon": regla.recomendacion.descripcion,
-                    "recomendacion": regla.recomendacion.recomendacion,
-                    "recomendacion_ecologica": regla.recomendacion.recomendacionEcologica
-                ]
-            }
+        // Selecciona la primera recomendación disponible para la enfermedad especificada
+        if let primeraRegla = reglasPorEnfermedad.first {
+            return [
+                "descripcion_enfermedad": primeraRegla.recomendacion.descripcionEnfermedad,
+                "descripcion": primeraRegla.recomendacion.descripcion,
+                "recomendacion": primeraRegla.recomendacion.recomendacion,
+                "recomendacion_ecologica": primeraRegla.recomendacion.recomendacionEcologica,
+                "climateRecommendation": primeraRegla.recomendacion.climateRecommendation
+            ]
         }
     }
     
@@ -447,15 +447,18 @@ func obtenerRecomendacion(especie: String, enfermedad: String, temperatura: Doub
             "descripcion_enfermedad": recomendacionGenerica.descripcionEnfermedad,
             "descripcion": recomendacionGenerica.descripcion,
             "recomendacion": recomendacionGenerica.recomendacion,
-            "recomendacion_ecologica": recomendacionGenerica.recomendacionEcologica
+            "recomendacion_ecologica": recomendacionGenerica.recomendacionEcologica,
+            "climateRecommendation": recomendacionGenerica.climateRecommendation
         ]
     }
     
     // Si no hay recomendaciones ni específicas ni genéricas, regresar un valor vacío
     return [
         "descripcion_enfermedad": "Sin descripción disponible",
-        "descripcion": "No se encontraro descrpiciones de la enfermedad",
+        "descripcion": "No se encontraron descripciones de la enfermedad.",
         "recomendacion": "No se encontraron recomendaciones específicas.",
-        "recomendacion_ecologica": "Mantener buenas prácticas de cultivo."
+        "recomendacion_ecologica": "Mantener buenas prácticas de cultivo.",
+        "climateRecommendation": "No se encontraron recomendaciones climáticas."
     ]
 }
+

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct Main: View {
     @State private var crop_name: String = ""
-    @State private var species_of_crop: String = ""
+    @State private var species_of_crop: String = "" // Inicializado vacío para mostrar el mensaje
     @State private var showImagePicker = false
     @State private var imageSource: UIImagePickerController.SourceType = .camera
     @State private var selectedImage: UIImage?
@@ -11,6 +11,7 @@ struct Main: View {
     
     // Lista para almacenar los cultivos
     @State private var crops: [Crop] = []
+    let cropSpecies = ["Trigo", "Calabaza", "Frijol"]
     
     var body: some View {
         NavigationStack {
@@ -22,10 +23,10 @@ struct Main: View {
                         .foregroundColor(Color("MainColor"))
                     Spacer()
                 }
-                .padding(.top,50)
+                .padding(.top, 50)
                 .padding(.horizontal, 30)
                 
-                // Campos de texto
+                // Campo de texto para el nombre del cultivo
                 VStack {
                     TextField("Nombre de cultivo", text: $crop_name)
                         .padding(.horizontal, 30)
@@ -37,11 +38,23 @@ struct Main: View {
                 }
                 .padding(.bottom, 10)
                 
+                // Dropdown list para la especie del cultivo con mensaje predeterminado
                 VStack {
-                    TextField("Especie de cultivo", text: $species_of_crop)
-                        .padding(.horizontal, 30)
-                        .padding(.top)
-                        .keyboardType(.default)
+                    HStack {
+                        Text("Especie de cultivo")
+                            .foregroundColor(species_of_crop.isEmpty ? .gray : .primary)
+                            .padding(.leading, 30)
+                        Spacer()
+                        Picker("Especie de cultivo", selection: $species_of_crop) {
+                            Text("Nombre de la especie").tag("")
+                            ForEach(cropSpecies, id: \.self) { species in
+                                Text(species).tag(species)
+                            }
+                        }
+                        .pickerStyle(MenuPickerStyle())
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .padding(.trailing, 30)
+                    }
                     Divider()
                         .background(Color.gray)
                         .padding(.horizontal, 30)
@@ -79,6 +92,37 @@ struct Main: View {
                 .padding(.horizontal, 30)
                 .padding(.bottom, 10)
                 
+                // Botón para seleccionar una imagen de la galería
+                Button(action: {
+                    if crop_name.isEmpty || species_of_crop.isEmpty {
+                        showAlert = true
+                    } else {
+                        imageSource = .photoLibrary
+                        showImagePicker = true
+                    }
+                }) {
+                    Spacer()
+                    Image(systemName: "photo.on.rectangle.angled")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(Color("MainColor"))
+                        .padding(.leading, 40)
+                    Text("Elegir de la Galería")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .fontWeight(.bold)
+                        .foregroundColor(Color("MainColor"))
+                        .padding(.trailing, 40)
+                    Spacer()
+                }
+                .overlay(
+                    Rectangle()
+                        .stroke(Color("MainColor"), lineWidth: 2)
+                )
+                .padding(.horizontal, 30)
+                .padding(.bottom, 20)
+                
                 // Mostrar la predicción en la interfaz
                 if !viewModel.cropHealthDescription.isEmpty {
                     Text(viewModel.cropHealthDescription)
@@ -92,7 +136,7 @@ struct Main: View {
                 ScrollView {
                     VStack {
                         ForEach(crops) { crop in
-                            CropItem(crop: crop, viewModel: viewModel)
+                            CropItem(crop: crop, viewModel: viewModel) // Solo pasa el crop y viewModel
                             Divider()
                         }
                     }
@@ -109,15 +153,18 @@ struct Main: View {
             .sheet(isPresented: $showImagePicker, onDismiss: {
                 if !crop_name.isEmpty && !species_of_crop.isEmpty && selectedImage != nil {
                     // Actualizar la imagen seleccionada en el servicio
+                    // Dentro del Main, donde se inicia el diagnóstico
                     viewModel.selectedImage = selectedImage
-                    viewModel.diagnoseCropHealth(temperatura: 25, especie: species_of_crop)
+                    viewModel.diagnoseCropHealth(especie: species_of_crop)
+
                     
-                    // Crear el nuevo cultivo con las recomendaciones
+                    // Dentro del botón de "Comenzar a analizar" o "Elegir de la Galería", donde se agrega el nuevo cultivo:
                     let nuevoCultivo = Crop(
                         name: crop_name,
                         species: species_of_crop,
                         location: "Puebla, México",
-                        image: Image(uiImage: selectedImage!)
+                        image: Image(uiImage: selectedImage!),
+                        capturedImage: selectedImage // Imagen capturada
                     )
                     crops.append(nuevoCultivo)
                     
@@ -131,4 +178,8 @@ struct Main: View {
             }
         }
     }
+}
+
+#Preview {
+    Main()
 }

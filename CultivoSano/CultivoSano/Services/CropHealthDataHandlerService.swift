@@ -1,49 +1,42 @@
-import Foundation
-import CoreLocation
 import SwiftUI
+import Foundation
 import CoreML
-import Vision
 
 class CropHealthDataHandlerService: ObservableObject {
     @Published var cropHealthDescription: String = "No diagnosis yet"
+    @Published var recomendacion: Recomendacion?
     @Published var selectedImage: UIImage? = nil
-    @Published var userLocation: CLLocation? = nil
-    @Published var cityName: String = ""
-    
+
     private let cropIdentifierService = CropIdentifierService()
-    private let locationService = LocationService()
     
-    // Variable predeterminada para la humedad
-    private let humedadPredeterminada: Double = 80.0
-    
-    init() {
-        locationService.startUpdatingLocation()
-        locationService.$userLocation.assign(to: &$userLocation)
-        locationService.$cityName.assign(to: &$cityName)
-    }
-    
-    func updateLocation() {
-        locationService.startUpdatingLocation()
-    }
-    
-    func diagnoseCropHealth(temperatura: Double, especie: String) {
+    func diagnoseCropHealth(especie: String) {
         guard let image = selectedImage else {
             cropHealthDescription = "Error: Imagen no seleccionada."
             return
         }
         
-        cropIdentifierService.predict(image: image) { [weak self] identifier in
-            guard let identifier = identifier else {
-                self?.cropHealthDescription = "No se pudo obtener un resultado del modelo."
+        // Obtener diagnóstico del modelo usando solo la imagen
+        cropIdentifierService.predict(image: image) { [weak self] diagnosis in
+            guard let self = self, let diagnosis = diagnosis else {
+                self?.cropHealthDescription = "No se pudo obtener un diagnóstico del modelo."
                 return
             }
             
-            // Imprimir la predicción en la consola para depuración
-            print("Predicción del modelo: \(identifier)")
-            
-            // Actualizar la descripción con la predicción obtenida
+            // Almacenar el diagnóstico en cropHealthDescription
             DispatchQueue.main.async {
-                self?.cropHealthDescription = "Predicción: \(identifier)"
+                self.cropHealthDescription = diagnosis
+                
+                // Obtener recomendaciones con el diagnóstico obtenido y la especie seleccionada
+                let recomendaciones = obtenerRecomendacion(especie: especie, enfermedad: diagnosis)
+                
+                // Asignar la recomendación al objeto
+                self.recomendacion = Recomendacion(
+                    descripcionEnfermedad: recomendaciones["descripcion_enfermedad"] ?? "",
+                    descripcion: recomendaciones["descripcion"] ?? "",
+                    recomendacion: recomendaciones["recomendacion"] ?? "",
+                    recomendacionEcologica: recomendaciones["recomendacion_ecologica"] ?? "",
+                    climateRecommendation: recomendaciones["climateRecommendation"] ?? ""
+                )
             }
         }
     }
