@@ -1,6 +1,6 @@
 //
-//  Cultivo_SanoApp.swift
-//  Cultivo_Sano
+//  Cultivos_SanoApp.swift
+//  Cultivos_Sano
 //
 //  Created by iOS Lab on 10/11/24.
 //
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct Cultivo_sanoApp: App {
+struct Cultivos_SanoApp: App {
     var body: some Scene {
         WindowGroup {
             Login()
