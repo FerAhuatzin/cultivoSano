@@ -24,7 +24,7 @@ struct CropAnalysis: View {
                     VStack(alignment: .leading) {
                         Text(crop.name)
                             .font(.title)
-                        Text("\(crop.species), Puebla, México")
+                        Text("\(crop.species), \(crop.location)")
                             .font(.subheadline)
                             .foregroundColor(.gray)
                     }

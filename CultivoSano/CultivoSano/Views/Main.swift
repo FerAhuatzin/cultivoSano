@@ -8,6 +8,8 @@ struct Main: View {
     @State private var selectedImage: UIImage?
     @State private var showAlert = false
     @StateObject private var viewModel = CropHealthDataHandlerService()
+    @StateObject private var locationService = LocationService()
+    
     
     // Lista para almacenar los cultivos
     @State private var crops: [Crop] = []
@@ -152,7 +154,7 @@ struct Main: View {
                         let nuevoCultivo = Crop(
                             name: crop_name,
                             species: species_of_crop,
-                            location: "Puebla, México",
+                            location: locationService.cityName.isEmpty ? "Ubicación desconocida" : locationService.cityName,
                             image: Image(uiImage: selectedImage!),
                             capturedImage: selectedImage,
                             recomendacion: viewModel.recomendacion // Asignar recomendación después del diagnóstico
@@ -169,6 +171,9 @@ struct Main: View {
 
             {
                 ImagePickerView(selectedImage: $selectedImage, sourceType: imageSource)
+            }
+            .onAppear {
+                locationService.startUpdatingLocation()
             }
         }
     }

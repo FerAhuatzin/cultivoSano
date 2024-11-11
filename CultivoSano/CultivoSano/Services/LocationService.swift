@@ -35,7 +35,7 @@ class LocationService: NSObject, ObservableObject, CLLocationManagerDelegate {
             DispatchQueue.main.async {
                 self.userLocation = location
                 self.getCityAndState(from: location) //Aqui llamamos al metodo getCityAndState con la variable location que almacena Lat y Lng
-                print("Lat : \(location.coordinate.latitude) \nLng : \(location.coordinate.longitude)")
+              
             }
         }
     }
