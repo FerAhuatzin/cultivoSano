@@ -1,4 +1,5 @@
 import SwiftUI
+import CoreLocation
 
 struct Main: View {
     @State private var crop_name: String = ""
@@ -9,6 +10,8 @@ struct Main: View {
     @State private var showAlert = false
     @StateObject private var viewModel = CropHealthDataHandlerService()
     @StateObject private var locationService = LocationService()
+    @State private var capturedLocation: CLLocation?
+
     
     
     // Lista para almacenar los cultivos
@@ -70,6 +73,7 @@ struct Main: View {
                     } else {
                         imageSource = .camera
                         showImagePicker = true
+                        locationService.startUpdatingLocation()
                     }
                 }) {
                     Spacer()
@@ -101,6 +105,7 @@ struct Main: View {
                     } else {
                         imageSource = .photoLibrary
                         showImagePicker = true
+                        locationService.startUpdatingLocation()
                     }
                 }) {
                     Spacer()
@@ -145,19 +150,25 @@ struct Main: View {
             }
             .sheet(isPresented: $showImagePicker, onDismiss: {
                 if !crop_name.isEmpty && !species_of_crop.isEmpty && selectedImage != nil {
-                    let viewModel = CropHealthDataHandlerService() // Nueva instancia del servicio para cada cultivo
+                    // Detén la actualización de la ubicación y guarda la última
+                    locationService.stopUpdatingLocation()
+                    capturedLocation = locationService.userLocation
+
+                    let viewModel = CropHealthDataHandlerService()
                     viewModel.selectedImage = selectedImage
                     viewModel.diagnoseCropHealth(especie: species_of_crop)
                     
-                    // Espera a que el diagnóstico se complete en el servicio antes de asignar la recomendación
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) { // Ajustar el tiempo según sea necesario
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        // Si hay una ubicación capturada, úsala; si no, deja ubicación desconocida
                         let nuevoCultivo = Crop(
                             name: crop_name,
                             species: species_of_crop,
                             location: locationService.cityName.isEmpty ? "Ubicación desconocida" : locationService.cityName,
+                            latitude: capturedLocation?.coordinate.latitude,
+                            longitude: capturedLocation?.coordinate.longitude,
                             image: Image(uiImage: selectedImage!),
                             capturedImage: selectedImage,
-                            recomendacion: viewModel.recomendacion // Asignar recomendación después del diagnóstico
+                            recomendacion: viewModel.recomendacion
                         )
                         crops.append(nuevoCultivo)
                         
@@ -165,13 +176,13 @@ struct Main: View {
                         crop_name = ""
                         species_of_crop = ""
                         selectedImage = nil
+                        capturedLocation = nil
                     }
                 }
-            })
-
-            {
+            }) {
                 ImagePickerView(selectedImage: $selectedImage, sourceType: imageSource)
             }
+
             .onAppear {
                 locationService.startUpdatingLocation()
             }

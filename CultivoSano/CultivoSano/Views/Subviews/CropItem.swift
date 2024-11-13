@@ -1,14 +1,17 @@
 import SwiftUI
 
 struct Crop: Identifiable {
-    let id = UUID()
-    let name: String
-    let species: String
-    let location: String
-    let image: Image
-    let capturedImage: UIImage?
-    var recomendacion: Recomendacion? // Nueva propiedad para almacenar la recomendación
+    var id = UUID()
+    var name: String
+    var species: String
+    var location: String
+    var latitude: Double?
+    var longitude: Double?
+    var image: Image
+    var capturedImage: UIImage?
+    var recomendacion: Recomendacion?
 }
+
 
 
 

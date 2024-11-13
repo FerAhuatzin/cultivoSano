@@ -1,8 +1,11 @@
 import SwiftUI
+import CoreLocation
 
 struct CropAnalysis: View {
-    var crop: Crop // Cambia para recibir el objeto Crop completo
-
+    var crop: Crop
+    @State private var isClimateSectionExpanded = false // Estado para rastrear la expansión de la sección climática
+    @StateObject private var weatherManager = WeatherManager() // Instancia de WeatherManager
+    
     var body: some View {
         ScrollView {
             VStack {
@@ -33,7 +36,6 @@ struct CropAnalysis: View {
                 }
                 .padding(.top)
                 
-                // Descripción de la enfermedad (descripcionEnfermedad)
                 if let descripcionEnfermedad = crop.recomendacion?.descripcionEnfermedad {
                     Text(descripcionEnfermedad)
                         .font(.headline)
@@ -44,7 +46,6 @@ struct CropAnalysis: View {
                         .padding(.horizontal)
                 }
 
-                // Usar la recomendación específica del cultivo
                 DisclosureGroup {
                     Text(crop.recomendacion?.descripcion ?? "No hay detección de plagas disponible.")
                         .padding(.vertical)
@@ -55,7 +56,6 @@ struct CropAnalysis: View {
                 }
                 .padding(.top)
 
-                // Recomendaciones específicas
                 DisclosureGroup {
                     Text(crop.recomendacion?.recomendacion ?? "No hay recomendaciones disponibles.")
                         .padding(.vertical)
@@ -66,7 +66,6 @@ struct CropAnalysis: View {
                 }
                 .padding(.top)
                 
-                // Estrategias ecológicas
                 DisclosureGroup {
                     Text(crop.recomendacion?.recomendacionEcologica ?? "No hay estrategias ecológicas disponibles.")
                         .padding(.vertical)
@@ -75,15 +74,32 @@ struct CropAnalysis: View {
                         .foregroundColor(Color("MainColor"))
                         .font(.title2)
                 }
-                DisclosureGroup {
-                    Text(crop.recomendacion?.climateRecommendation ?? "No hay recomendaciones climáticas disponibles.")
-                        .padding(.vertical)
+                
+                // Recomendaciones climáticas
+                DisclosureGroup(isExpanded: $isClimateSectionExpanded) {
+                    if let temperature = weatherManager.currentWeather?.currentWeather.temperature.value,
+                       let condition = weatherManager.currentWeather?.currentWeather.condition.description {
+                        Text("Clima actual: \(temperature)°C, \(condition)")
+                            .padding(.vertical)
+                    } else {
+                        Text("No se pudo obtener el clima.")
+                            .padding(.vertical)
+                    }
                 } label: {
                     Text("Recomendaciones climáticas")
                         .foregroundColor(Color("MainColor"))
                         .font(.title2)
                 }
                 .padding(.top)
+                .onChange(of: isClimateSectionExpanded) { expanded in
+                    if expanded, let latitude = crop.latitude, let longitude = crop.longitude {
+                        // Obtiene el clima solo si la sección se expande y si existen coordenadas
+                        let location = CLLocation(latitude: latitude, longitude: longitude)
+                        Task {
+                            await weatherManager.fetchWeather(for: location)
+                        }
+                    }
+                }
             }
         }
         .padding(.horizontal, 30)

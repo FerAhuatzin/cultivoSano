@@ -1,22 +1,39 @@
-
 import Foundation
-import CoreLocation
 import WeatherKit
-/*
-class Weather {
-    let weatherService = WeatherService.shared
-    
-    func fetchWeatherData(latitude: Double, longitude: Double) async {
+import CoreLocation
+import SwiftUI
+
+@MainActor
+class WeatherManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+    @Published var currentWeather: Weather? // Variable publicada para actualizar la vista
+    private let weatherService = WeatherService()
+    private let locationManager = CLLocationManager()
+
+    override init() {
+        super.init()
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+
+    // Método para obtener el clima para una ubicación específica
+    func fetchWeather(for location: CLLocation) async {
         do {
-            let location = CLLocation(latitude: latitude, longitude: longitude)
-            let now = Date()
-            let previous =  Calendar.current.date(byAdding: .day, value: -7, to: now)!
-            let interval = DateInterval(start: previous, end: now)
-            let weather = try await weatherService.weather(for: location)
-            let (humidity, temperature) = try await weatherService.monthlyStatistics(for: location, forMonthsIn: interval, including: .precipitation, .temperature)
+            let weather = try await weatherService.weather(for: location) // Obtiene el clima
+            DispatchQueue.main.async {
+                self.currentWeather = weather // Actualiza el clima en la vista
+            }
         } catch {
-            // Maneja errores
-            print("Error fetching weather data: \(error)")
+            print("Error al obtener el clima: \(error)") // Manejo de errores
         }
     }
-}*/
+
+    // Delegate para recibir la ubicación
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.first else { return }
+        Task {
+            await fetchWeather(for: location) // Obtiene el clima para la primera ubicación
+        }
+    }
+}
+
