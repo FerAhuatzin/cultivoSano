@@ -10,11 +10,13 @@
 ---
 
 ## 🚀 **Key Features**
-- **Computer Vision**: Diagnose crop issues from photos taken with your camera or selected from your gallery.  
-- **Weather Insights**: Access real-time weather information and its impact on your crops.  
-- **Personalized Recommendations**: Receive ecological and sustainable solutions to improve crop health.  
-- **Crop Management**: Organize your crops and easily access diagnostics and advice.  
-
+- **Computer Vision**: Diagnose crop issues from photos taken with your camera or selected from your gallery.
+  <img src="Images/AppFlow.jpeg" width="50%">
+- **Weather Insights**: Access real-time weather information and its impact on your crops.
+- **Crop Management**: Organize your crops and easily access diagnostics and advice.
+  <img src="Images/Crops.jpeg" width="30%">
+- **Personalized Recommendations**: Receive ecological and sustainable solutions to improve crop health.
+  <img src="Images/CropAnalysis.jpeg" width="30%">
 ---
 
 ## 🎯 **Alignment with the United Nations Sustainable Development Goals (SDGs)**
