@@ -76,9 +76,8 @@ If you encounter any issues during installation, please open an issue in the rep
 ---
 
 ## 🌟 Development Team
-Fernando Ahuatzin (@FerAhuatzin) 
-Alejandro Zepeda (@zepedagg)
-Ladislao Martinez (@LADISMTZ)
-Ruben Suárez (@rubensuarez22)
+- Fernando Ahuatzin (@FerAhuatzin) 
+- Alejandro Zepeda (@zepedagg)
+- Ladislao Martinez (@LADISMTZ)
+- Ruben Suárez (@rubensuarez22)
 
-Development Team: [Your teammates' names]
