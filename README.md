@@ -79,7 +79,7 @@ If you encounter any issues during installation, please open an issue in the rep
 
 ## 🌟 Development Team
 - Fernando Ahuatzin (@FerAhuatzin) 
-- Alejandro Zepeda (@zepedagg)
+- Alejandro Zepeda (@zepedag)
 - Ladislao Martinez (@LADISMTZ)
 - Ruben Suárez (@rubensuarez22)
 
