@@ -2,12 +2,12 @@ import Foundation
 import CoreLocation
 
 class LocationService: NSObject, ObservableObject, CLLocationManagerDelegate {
-    @Published var userLocation: CLLocation? // Utilice @Published para que la informacion de esta variable pueda ser usada en otras views.
-    @Published var cityName: String = "" // Esta variable sera la que mostrara el nombre de la ciudad (pruebas de localizacion)
+    @Published var userLocation: CLLocation?
+    @Published var cityName: String = "" // Esta variable sera la que mostrara el nombre de la ciudad
     
     private var locationManager: CLLocationManager?
     
-    private let geocoder = CLGeocoder() // Aqui cree  la instancia de CLGeocoder
+    private let geocoder = CLGeocoder() 
     
     override init() {
         super.init()
